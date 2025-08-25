@@ -1,0 +1,43 @@
+{
+    "name": "kelvinmo/simplejwt",
+    "description": "A simple JSON Web Token library for PHP.",
+    "keywords": [ "jwt", "jwe", "jose" ],
+    "homepage": "https://github.com/kelvinmo/simplejwt",
+    "require": {
+        "php": "^8.0",
+        "ext-openssl": "*",
+        "ext-hash": "*",
+        "ext-gmp": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6 || ^10.0 || ^11.0",
+        "consolidation/robo": "^4.0 || ^5.0",
+        "phpstan/phpstan": "^2.0.1",
+        "phlak/semver": "^5.0 || ^6.0"
+    },
+    "suggest": {
+        "ext-sodium": "Provides support for OKP (X25519/Ed25519) keys",
+        "kelvinmo/jwkstool": "Command-line tool to manage JSON web keys"
+    },
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Kelvin Mo",
+            "email": "kmo@users.sourceforge.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "SimpleJWT\\": "src/SimpleJWT" }
+    },
+    "scripts": {
+        "phar": [ "@composer install", "@composer bin build install", "robo phar" ],
+        "test": [ "@composer install", "phpunit" ],
+        "coverage": [ "@composer install", "phpdbg -qrr vendor/bin/phpunit --coverage-text" ],
+        "phpstan": [ "@composer install", "phpstan analyse" ],
+        "update-copyright": [ "@composer install", "robo update_copyright" ],
+        "release:major": [ "@composer install", "robo release major" ],
+        "release:minor": [ "@composer install", "robo release minor" ],
+        "release:patch": [ "@composer install", "robo release patch" ],
+        "release:pre-release": [ "@composer install", "robo release pre-release" ]
+    }
+}

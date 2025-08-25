@@ -1,0 +1,11 @@
+*.log
+*.zip
+*.tar.gz
+.DS_Store
+Thumbs.db
+vendor/
+node_modules/
+wp-content/uploads/alb-logs/
+.idea/
+.vscode/
+composer.lock

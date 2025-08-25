@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ALB HPP Donations — Керівництво адміністратора</title>
+  <style>
+    :root { --accent:#e01a2a; --muted:#6b7280; --bg:#ffffff; --ink:#111827; }
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif}
+    .container{max-width:960px;margin:0 auto;padding:24px}
+    header{border-bottom:1px solid #e5e7eb;margin-bottom:20px}
+    header h1{font-size:28px;margin:0 0 8px}
+    header .meta{color:var(--muted);font-size:14px}
+    nav.toc{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin:16px 0}
+    nav.toc h2{font-size:18px;margin:0 0 8px}
+    nav.toc ol{margin:0 0 0 18px;padding:0}
+    nav.toc a{color:#111827;text-decoration:none}
+    nav.toc a:hover{text-decoration:underline}
+    h2{margin-top:28px;border-left:4px solid var(--accent);padding-left:10px}
+    h3{margin-top:22px}
+    code, pre{font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    code{background:#f3f4f6;padding:.1em .35em;border-radius:6px}
+    pre{background:#0b1020;color:#e5e7eb;padding:14px;border-radius:10px;overflow:auto}
+    .callout{border-left:4px solid var(--accent);background:#fff5f5;padding:12px 14px;border-radius:8px;margin:12px 0}
+    .ok{border-color:#10b981;background:#f0fdf4}
+    .warn{border-color:#f59e0b;background:#fffbeb}
+    figure{margin:18px 0}
+    figure>img{max-width:100%;height:auto;border:1px solid #e5e7eb;border-radius:10px}
+    figcaption{font-size:14px;color:var(--muted);margin-top:6px}
+    table{border-collapse:collapse;width:100%}
+    th,td{border:1px solid #e5e7eb;padding:8px 10px;text-align:left}
+    .foot{margin-top:36px;color:var(--muted);font-size:14px}
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:12px}
+    a.btn{display:inline-block;background:var(--accent);color:#fff;padding:8px 14px;border-radius:10px;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ALB HPP Donations — Керівництво адміністратора</h1>
+      <p class="meta">Версія плагіна: <span class="badge">1.0.0</span> · Дата: <time>2025‑08‑23</time></p>
+    </header>
+
+    <nav class="toc" aria-label="Зміст">
+      <h2>Зміст</h2>
+      <ol>
+        <li><a href="#about">Що це і для чого</a></li>
+        <li><a href="#requirements">Вимоги</a></li>
+        <li><a href="#install">Встановлення</a></li>
+        <li><a href="#setup">Налаштування та авторизація</a></li>
+        <li><a href="#payments">Прийом пожертв і сторінки</a></li>
+        <li><a href="#history">Історія платежів</a></li>
+        <li><a href="#security">Безпека</a></li>
+        <li><a href="#troubleshooting">Усунення неполадок (FAQ)</a></li>
+      </ol>
+    </nav>
+
+    <section id="about">
+      <h2>1. Що це і для чого</h2>
+      <p><strong>ALB HPP Donations</strong> — плагін WordPress для прийому пожертв через Hosted Payment Page API, банку АТ "БАНК АЛЬЯНС". Плагін надає інтерфейс для авторизації пристрою, керування токеном доступу та відображення <em>Історії платежів</em> у адмін‑панелі.</p>
+    </section>
+
+    <section id="requirements">
+      <h2>2. Вимоги</h2>
+      <ul>
+        <li>WordPress 6.0+ (PHP 8.0+; рекомендовано PHP 8.1+; PHP-розширення: gmp, hash, openssl).</li>
+        <li>Адміністративні права для доступу до плагіна.</li>
+        <li>Облікові дані: <code>Merchant ID</code>, <code>Service Code</code>, <code>Private JWK</code> (для отримання необхідно звернутись в АТ “БАНК АЛЬЯНС”).</li>
+        <li>Коректний часовий пояс сайту: <code>Європа/Київ</code> (для відображення <code>tokenExpiration</code>).</li>
+      </ul>
+    </section>
+
+    <section id="install">
+      <h2>3. Встановлення</h2>
+      <ol>
+        <li>Завантажте архів плагіна й встановіть через <em>Плагіни → Додати новий → Завантажити плагін</em>.</li>
+        <li>Активуйте плагін.</li>
+        <li>У меню Адмін‑панелі з’явиться пункт <b>ALB Donations</b> з підсторінками <em>Налаштування</em> та <em>Історія платежів</em>.</li>
+      </ol>
+	  
+	  <figure>
+        <img src="img/01.png" alt="Встановлення плагіна ALB Donations" />
+        <figcaption>Скрін 1: сторінка втановлення плагіна (приклад).</figcaption>
+      </figure>
+    </section>
+
+    <section id="setup">
+      <h2>4. Налаштування та авторизація</h2>
+      <h3>4.1. Початкові налаштування</h3>
+      <p>Перейдіть до <em>ALB Donations → Налаштування</em> і заповніть поля, надані банком (<code>Merchant ID</code>, <code>Service Code</code>, <code>Private JWK</code>).</p>
+	  <p>Поля <code>Device ID</code> та <code>Refresh Token</code> відображаються як довідкові (read‑only) — вони зберігаються після успішної авторизації пристрою.</p>
+      <p>Виберіть необхідний <em>Режим роботи</em> (Тестовий або Продакшн) та натисніть кнопку <strong>Зберегти зміни</strong> </p>
+      <figure>
+        <img src="img/02.png" alt="Налаштування плагіна ALB Donations" />
+        <figcaption>Скрін 2: сторінка налаштувать плагіна.</figcaption>
+      </figure>
+
+      <h3>4.2. Авторизація пристрою</h3>
+      <ol>
+        <li>Натисніть <strong>Переавторизувати зараз</strong></li>
+        <li>Після успіху з’явиться <em>Токен дійсний до: </em> — дата/час дії токена.</li>
+      </ol>
+      <div class="callout warn"><strong>Важливо.</strong> Токен дійсний 24 години; автоматичне поновлення виконується кожні ~12 годин. Ви також можете натиснути <em>Переавторизувати зараз</em>, щоб оновити токен вручну.</div>
+
+      <h3>4.3. Інші налаштування</h3>
+      <p>Переконайтеся, що заповнені поля <em>Методи оплати</em> (уточніть в банку які вам доступні методи)</p>
+	  <p>Поля <em>Поля Success</em> та <em>URL Fail URL</em> заповнюються автоматично при встановлені плагіну, відповідні сторінки теж створюються автоматично
+	  (при необхідності можете вказати свої)</p>
+	  
+	  <p> <em>Режим декрипту</em> - визначає медот розшифровки відповідей від банку. В Продакшн режимі доступний тільки локальний метод на стороні серверу сайту!<br>
+	  <small>[*]<i> Переконайтесь що JWT бібліотека працює (див. вимоги до PHP в п.2) </i></small>
+	  </p>
+	  
+      <figure>
+        <img src="img/03.png" alt="інші налаштування плагіна" />
+        <figcaption>Скрін 3: Інші налаштування плагіна.</figcaption>
+      </figure>
+
+      <h3>4.4. Часовий пояс і точність часу</h3>
+      <p>Переконайтеся, що у <em>Налаштування → Загальні → Часовий пояс</em> вибрано <strong>Київ</strong>. У плагіні дата <code>tokenExpiration</code> парситься та показується у локальному часі сайту.</p>
+
+      <h3>4.5. Доступ лише для адміністраторів</h3>
+      <p>Розділ плагіна доступний тільки користувачам з правами адміністратора.</p>
+    </section>
+
+    <section id="payments">
+      <h2>5. Прийом пожертв і сторінки</h2>
+      <p>Пожертви відправляються через hosted‑сторінку АТ "БАНК АЛЬЯНС".<br>
+	  Зазвичай на сайті створюють сторінку <em>Зробити пожертву</em> або <em>Підтримати донатом</em> на якій розміщують шорткод <strong>[alb_donate]</strong><br>
+	  Після оплати банк повертає користувача на сторінку успіху/помилки (URL задається у налаштуваннях мерчанта).</p>
+      <figure>
+        <img src="img/04.png" alt="сторінка пожертви" />
+        <figcaption>Скрін 4: приклад сторінки «Зробити пожертву» на фронтенді.</figcaption>
+      </figure>
+	  <div class="callout ok"><strong>Порада:</strong> За потреби можна змінити зовнішній вигляд форми та налаштувати відображенння необхідних полів
+	  (наприклад: залишити тільки поле <em>Сума</em>). Всі налаштування знаходяться в файлах плагіну: <u>includes/shortcode-donate.php</u>, <u>assets/donate.css</u> 
+	  </div>
+	  
+    </section>
+
+    <section id="history">
+      <h2>6. Історія платежів</h2>
+      <p>У розділі <em>ALB Donations → Історія платежів</em> відображаються транзакції, отримані через HPP. Передбачено очистку історії (<em>Видалити всі платежі</em>) для тестових оточень.</p>
+
+<small>
+<table><thead><tr>
+ <th>ID</th><th>Дата</th><th>Сума, грн</th><th>Статус</th><th>HPP ID</th><th>MRID</th><th>Email</th><th>Ім’я</th><th>Прізвище</th><th>Призначення</th><th>Дії</th>
+ </tr></thead><tbody>
+ <tr>
+  <td>12</td><td>2025-08-22 16:16</td><td>200</td><td>PENDING</td><td>17...zw</td>
+  <td>2f7...c92</td><td></td><td></td><td></td>
+  <td>Благодійний внесок</td><td>
+  [Оновити]</td>
+ </tr>
+ <tr>
+  <td>11</td><td>2025-08-22 10:22</td><td>500</td><td>SUCCESS</td><td>29...ft</td>
+  <td>3f6...v5m</td><td>nik@ua.ua</td><td>Микола</td><td></td>
+  <td>Благодійний внесок</td><td>
+  [Оновити]</td>
+ </tr>
+ <tr>
+  <td>10</td><td>2025-08-21 19:55</td><td>1200</td><td>SUCCESS</td><td>5t...mk</td>
+  <td>17h...3c9</td><td></td><td>Василь</td><td></td>
+  <td>Благодійний внесок</td><td>
+  [Оновити]</td>
+ </tr>
+ </tbody></table>
+</small>
+      <p class="callout ok"><strong>Порада:</strong> Статуси оновлюються автоматично кожні ~10хв. При потребі можна оновити статус окремої транзакції за допомогою кнопки <em>Оновити</em>, розташованої справа</p>
+    </section>
+
+    <section id="security">
+      <h2>7. Безпека</h2>
+      <ul>
+        <li>Доступ до сторінок плагіна — лише для ролі <em>Адміністратор</em>.</li>
+        <li>При збереженні налаштувань використовуються WordPress nonce й перевірка прав.</li>
+        <li>Конфіденційні поля приховано або відображено в режимі read‑only.</li>
+        <li>Дані валідовано/санітайзено перед збереженням.</li>
+      </ul>
+    </section>
+
+    <section id="troubleshooting">
+      <h2>8. Усунення неполадок (FAQ)</h2>
+      <h3>Токен «злітає» після збереження налаштувань</h3>
+      <p>Переконайтеся, що опція сторінки додана до списку дозволених параметрів (settings API) і що користувач має права адміністратора.</p>
+
+      <h3>Невірний час у «Токен дійсний до»</h3>
+      <p>Перевірте часовий пояс сайту. У логах можна вивести «tokenExpiration» з шлюзу банку та порівняти з фактичним часом.</p>
+
+      <h3>Переавторизація</h3>
+      <p>За умовами банку, токен діє 24 години; автооновлення виконується орієнтовно кожні 12 годин. Кнопка <em>Переавторизувати зараз</em> оновлює токен вручну.</p>
+
+      <h3>Помилки у консолі (404) для лог‑файлів</h3>
+      <p>Якщо логів ще немає — плагін не показує помилку на сторінці, але у DevTools може бути 404 для запиту. Це не критично; файл зʼявиться після першого запису.</p>
+    </section>
+
+    <p class="foot">© <span id="y"></span> ALB HPP Donations. Документ підготовлено для внутрішнього користування.</p>
+  </div>
+
+  <script>
+    // Підстановка поточного року у футері
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

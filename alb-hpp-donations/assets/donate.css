@@ -1,0 +1,15 @@
+.alb-donate-block {text-align: center; margin-top:20px;}
+.alb-donate { max-width:370px;margin-left: auto; margin-right: auto; text-align: left;}
+.alb-donate .alb-row{margin-bottom:14px;  font-size: 16px; }
+.alb-donate .alb-row label {display: block; font-weight: bold;}
+.alb-donate .alb-input{width:100%;padding:12px;}
+.alb-donate .alb-amounts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.alb-donate .alb-btn-amount{padding:10px 12px;border:1px solid #ccc;background:#fff;cursor:pointer;border-radius:0px; font-size: 20px;}
+.alb-donate .alb-btn-submit{
+    font-size: 20px !important;
+    border-radius: 0px !important;
+    background-color: black !important;
+    color: white !important;
+    width: 100%;
+    padding: 12px !important;
+}
