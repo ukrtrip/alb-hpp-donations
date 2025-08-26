@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ALB HPP Donations
  * Description: Шорткод [alb_donate] для благодійних внесків через Hosted Payment Page Альянс Банку.
- * Version: 1.0.0
+ * Version: 1.1
  * Author: SP for <a href="https://clusters.org.ua" target="_blank">UCA</a>
  * Requires at least: 5.8
  * Requires PHP: 8.0
@@ -24,6 +24,7 @@ define('ALB_HPP_OPT', 'alb_hpp_options');
 require_once ALB_HPP_DIR.'includes/class-alb-payments.php';
 require_once ALB_HPP_DIR.'includes/class-alb-hpp-client.php';
 require_once ALB_HPP_DIR.'includes/class-alb-admin.php';
+require_once ALB_HPP_DIR.'includes/class-alb-keys.php';
 require_once ALB_HPP_DIR.'includes/shortcode-donate.php';
 require_once ALB_HPP_DIR.'includes/class-alb-authorize.php';
 

@@ -111,7 +111,7 @@ class ALB_Admin {
             'baseUrl'         => 'Base URL API *',
 			'merchantId'      => 'Merchant ID (надає банк) *',
             'serviceCode'     => 'Service Code (надає банк) *',
-            'privateJwk'      => 'Private JWK (надає банк) *',
+            'privateJwk'      => 'Private JWK *',
             'deviceId'        => 'Device ID',
             'refreshToken'    => 'Refresh Token',
             'paymentMethods'  => 'Методи оплати *',
@@ -202,9 +202,9 @@ foreach ($fields as $key=>$label) {
 		echo '</p>';
         echo '<p style="margin:10px 0 0 0"><button type="button" class="button button-primary" id="alb-reauthorize-now">Переавторизувати зараз</button> <span id="alb-reauth-msg" style="margin-left:8px;color:#6b7280"></span></p>';
         echo '</div>';
-        ?>
-        <script>
-        document.addEventListener('DOMContentLoaded', function(){
+?>
+<script>
+ document.addEventListener('DOMContentLoaded', function(){
           const btn = document.getElementById('alb-reauthorize-now');
           if (!btn) return;
           const msg = document.getElementById('alb-reauth-msg');
@@ -221,9 +221,9 @@ foreach ($fields as $key=>$label) {
             } catch(e) { msg.style.color = '#dc2626'; msg.textContent = e.message || 'Помилка мережі'; }
             finally { btn.disabled = false; btn.textContent = old; }
           });
-        });
-        </script>
-        <?php
+ });
+</script>
+<?php
 
         echo '<form method="post" action="options.php">';
 		

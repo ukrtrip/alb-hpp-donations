@@ -38,7 +38,7 @@
   <div class="container">
     <header>
       <h1>ALB HPP Donations — Керівництво адміністратора</h1>
-      <p class="meta">Версія плагіна: <span class="badge">1.0.0</span> · Дата: <time>2025‑08‑23</time></p>
+      <p class="meta">Версія плагіна: <span class="badge">1.1.0</span> · Дата: <time>2025‑08‑26</time></p>
     </header>
 
     <nav class="toc" aria-label="Зміст">
@@ -50,6 +50,7 @@
         <li><a href="#setup">Налаштування та авторизація</a></li>
         <li><a href="#payments">Прийом пожертв і сторінки</a></li>
         <li><a href="#history">Історія платежів</a></li>
+		<li><a href="#keys">Генерація JWK‑ключів</a></li>
         <li><a href="#security">Безпека</a></li>
         <li><a href="#troubleshooting">Усунення неполадок (FAQ)</a></li>
       </ol>
@@ -87,7 +88,8 @@
     <section id="setup">
       <h2>4. Налаштування та авторизація</h2>
       <h3>4.1. Початкові налаштування</h3>
-      <p>Перейдіть до <em>ALB Donations → Налаштування</em> і заповніть поля, надані банком (<code>Merchant ID</code>, <code>Service Code</code>, <code>Private JWK</code>).</p>
+      <p>Перейдіть до <em>ALB Donations → Налаштування</em> і заповніть поле <code>Private JWK</code> <span class="badge"><a href="#keys"><b> див. п.7 </b></a></span></p>
+	  <p>Заповніть поля надані банком (<code>Merchant ID</code>, <code>Service Code</code>).</p>
 	  <p>Поля <code>Device ID</code> та <code>Refresh Token</code> відображаються як довідкові (read‑only) — вони зберігаються після успішної авторизації пристрою.</p>
       <p>Виберіть необхідний <em>Режим роботи</em> (Тестовий або Продакшн) та натисніть кнопку <strong>Зберегти зміни</strong> </p>
       <figure>
@@ -169,8 +171,37 @@
       <p class="callout ok"><strong>Порада:</strong> Статуси оновлюються автоматично кожні ~10хв. При потребі можна оновити статус окремої транзакції за допомогою кнопки <em>Оновити</em>, розташованої справа</p>
     </section>
 
+    
+    <section id="keys">
+      <h2>7. Генерація JWK‑ключів</h2>
+      <p>У плагіні додано окремий пункт меню <strong>ALB → Ключі (JWK)</strong>, який дозволяє створити пару ключів у форматі JWK для роботи з Банком Альянс.</p>
+
+      <h3>Функції сторінки</h3>
+      <ul>
+        <li><strong>Згенерувати ключі (перезапише)</strong> — створює нову пару EC P‑384 (secp384r1). У каталозі <code>wp-content/uploads/alb-hpp-keys/</code> з’являться:
+          <ul>
+            <li><code>private.pem</code> — приватний ключ у PEM (залишається у вас);</li>
+            <li><code>private_jwk.json</code> — приватний JWK;</li>
+            <li><code>public_jwk.json</code> — публічний JWK, який треба надіслати банку.</li>
+          </ul>
+          Каталог закрито від публічного доступу (.htaccess), але <code>public_jwk.json</code> доступний для завантаження з адмінки.
+        </li>
+        <li><strong>Завантажити публічний JWK</strong> — кнопка для скачування <code>public_jwk.json</code> та передачі його банку.</li>
+        <li><strong>Зберегти приватний JWK у налаштування</strong> — записує вміст <code>private_jwk.json</code> у поле <em>Private JWK</em> плагіна.<br>
+		<span class="badge">ВАЖЛИВО</span> Після цієї дії <em>Merchant ID</em> та <em>Service Code</em> очищаються — введіть нові значення, які надасть банк.</li>
+      </ul>
+
+      <h3>Формат ключів</h3>
+      <p>Ключі відповідають вимогам банку: <code>kty="EC"</code>, <code>crv="P-384"</code>, <code>alg="ECDH-ES+A256KW"</code>, <code>use="enc"</code>, координати <code>x</code> і <code>y</code> у Base64URL (у публічному ключі відсутній <code>d</code>).</p>
+
+      <div class="callout ok">
+        <p><strong>Порада:</strong> Передавайте банку лише <code>public_jwk.json</code>. <code>private_jwk.json</code> і <code>private.pem</code> зберігайте на сервері та в резервній копії (права доступу 600).</p>
+      </div>
+    </section>
+
+
     <section id="security">
-      <h2>7. Безпека</h2>
+      <h2>8. Безпека</h2>
       <ul>
         <li>Доступ до сторінок плагіна — лише для ролі <em>Адміністратор</em>.</li>
         <li>При збереженні налаштувань використовуються WordPress nonce й перевірка прав.</li>
@@ -180,7 +211,7 @@
     </section>
 
     <section id="troubleshooting">
-      <h2>8. Усунення неполадок (FAQ)</h2>
+      <h2>9. Усунення неполадок (FAQ)</h2>
       <h3>Токен «злітає» після збереження налаштувань</h3>
       <p>Переконайтеся, що опція сторінки додана до списку дозволених параметрів (settings API) і що користувач має права адміністратора.</p>
 
