@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: alb-hpp-donations 1.2.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-08-27 00:00\n"
+"PO-Revision-Date: 2025-08-27 18:35+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.7\n"
+
+#: shortcode form labels
+msgid "Donation Amount"
+msgstr "Donation Amount"
+
+msgid "UAH"
+msgstr "UAH"
+
+msgid "Your amount, e.g."
+msgstr "Your amount, e.g."
+
+msgid "First name"
+msgstr "First name"
+
+msgid "Last name"
+msgstr "Last name"
+
+msgid "Email (for receipt)"
+msgstr "Email (for receipt)"
+
+msgid "Comment (optional)"
+msgstr "Comment (optional)"
+
+msgid "Charitable donation"
+msgstr "Charitable donation"
+
+msgid "Donate"
+msgstr "Donate"
+
+msgid "library not found"
+msgstr "library not found"
+
+msgid "MerchantId is not set in the plugin settings."
+msgstr "MerchantId is not set in the plugin settings."
+
+msgid "DeviceId/refreshToken not set in plugin settings."
+msgstr "DeviceId/refreshToken not set in plugin settings."

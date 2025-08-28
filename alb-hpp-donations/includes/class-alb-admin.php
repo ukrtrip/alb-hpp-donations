@@ -288,7 +288,7 @@ foreach ($fields as $key=>$label) {
                 echo '<td>'.esc_html($r['created_at']).'</td>';
                 echo '<td>'.esc_html($uah).'</td>';
                 echo '<td>'.esc_html($r['status']).'</td>';
-                echo '<td>'.esc_html($r['hpp_order_id']).'</td>';
+                echo '<td><a href="https://status-pay.alb.ua/?hpp_id='.esc_html($r['hpp_order_id']).'" target="_blank">'.esc_html($r['hpp_order_id']).'</a></td>';
                 echo '<td>'.esc_html($r['merchant_request_id']).'</td>';
                 echo '<td>'.esc_html($r['customer_email']).'</td>';
                 echo '<td>'.esc_html($r['customer_first_name']).'</td>';

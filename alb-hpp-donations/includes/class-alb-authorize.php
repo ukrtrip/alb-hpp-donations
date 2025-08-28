@@ -119,7 +119,11 @@ class ALB_Authorize {
     // шлях до вбудованої бібліотеки
     $init = ALB_HPP_DIR . 'lib/simplejwt/init.php';
     if (!is_file($init)) {
-        throw new RuntimeException('SimpleJWT бібліотека не знайдена (lib/simplejwt/init.php).');
+//        throw new RuntimeException('SimpleJWT бібліотека не знайдена (lib/simplejwt/init.php).');
+		throw new RuntimeException('SimpleJWT '._e('library not found','alb-hpp-donations').' (lib/simplejwt/init.php).');
+		
+		
+		
     }
     require_once $init;
     // Імпорти класів бібліотеки

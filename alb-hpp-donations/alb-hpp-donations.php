@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ALB HPP Donations
  * Description: Шорткод [alb_donate] для благодійних внесків через Hosted Payment Page Альянс Банку.
- * Version: 1.1
+ * Version: 1.2.0
  * Author: SP for <a href="https://clusters.org.ua" target="_blank">UCA</a>
  * Requires at least: 5.8
  * Requires PHP: 8.0
@@ -98,6 +98,41 @@ register_activation_hook(__FILE__, function () {
     update_option(ALB_HPP_OPT, $opt);
 });
 
+
+// Load plugin textdomain for translations
+function alb_hpp_donations_load_textdomain() {
+    load_plugin_textdomain('alb-hpp-donations', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}
+add_action('plugins_loaded', 'alb_hpp_donations_load_textdomain');
+
+
+// Detect current site language ('uk' or 'en') using Polylang/WPML if present, else WP locale
+function alb_hpp_detect_language(): string {
+    // 1) Запит може явно передати ?lang=uk|en
+    $req_lang = isset($_REQUEST['lang']) ? strtolower(sanitize_text_field((string)$_REQUEST['lang'])) : '';
+    if (in_array($req_lang, ['uk','en'], true)) {
+        return $req_lang;
+    }
+    // 2) Polylang
+    if (function_exists('pll_current_language')) {
+        $slug = strtolower((string) pll_current_language('slug'));
+        if (in_array($slug, ['uk','en'], true)) return $slug;
+    }
+    // 3) WPML
+    if (defined('ICL_LANGUAGE_CODE')) {
+        $slug = strtolower((string) ICL_LANGUAGE_CODE);
+        if (in_array($slug, ['uk','en'], true)) return $slug;
+    }
+    // 4) WP core
+    $loc = get_locale(); // типово 'uk_UA' або 'en_US'
+    if (is_string($loc) && strlen($loc) >= 2) {
+        $two = strtolower(substr($loc, 0, 2));
+        if (in_array($two, ['uk','en'], true)) return $two;
+    }
+    return 'uk';
+}
+
+
 // ===== REST маршрути =====
 add_action('rest_api_init', function () {
     register_rest_route('alb/v1', '/create-order', [
@@ -118,7 +153,7 @@ function alb_hpp_rest_create_order(\WP_REST_Request $req) {
 
     $opt['baseUrl']    = $opt['baseUrl']    ?? ALB_HPP_PROD_BASE;
     $opt['apiVersion'] = $opt['apiVersion'] ?? 'v1';
-    $opt['language']   = $opt['language']   ?? 'uk';
+    $opt['language'] = alb_hpp_detect_language();
 
     if (!empty($opt['paymentMethods']) && is_string($opt['paymentMethods'])) {
         $opt['paymentMethods'] = array_filter(array_map('trim', explode(',', $opt['paymentMethods'])));
@@ -146,7 +181,7 @@ function alb_hpp_rest_create_order(\WP_REST_Request $req) {
         $params = [
             'coinAmount'       => $coinAmount,
             'paymentMethods'   => $opt['paymentMethods'],
-            'language'         => 'uk',
+            'language'         => $opt['language'],
             'successUrl'       => $opt['successUrl'] ?? home_url('/'),
             'failUrl'          => $opt['failUrl']    ?? home_url('/'),
             'notificationUrl'  => $opt['notificationUrl'] ?? (home_url('/wp-json/alb/v1/notify')),

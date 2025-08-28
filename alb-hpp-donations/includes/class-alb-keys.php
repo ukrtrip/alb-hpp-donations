@@ -75,7 +75,7 @@ class ALB_Keys_Admin {
         if ($pub_exists) {
             $pub = file_get_contents($pub_file);
             echo '<p><a class="button button-secondary" href="'.esc_url($pub_url).'" download>Завантажити public_jwk.json</a></p>';
-            echo '<textarea readonly style="width:100%;height:260px">'.esc_textarea($pub).'</textarea>';
+            echo '<textarea readonly style="width:100%;height:200px">'.esc_textarea($pub).'</textarea>';
         } else {
             echo '<p>Ще не згенеровано.</p>';
         }
@@ -86,7 +86,7 @@ class ALB_Keys_Admin {
             echo '<form method="post" id="albFormSavePriv">';
             wp_nonce_field('alb_keys_save_private');
             echo '<p><em>Нижче вміст <code>private_jwk.json</code> (не відправляти банку):</em></p>';
-            echo '<textarea readonly style="width:100%;height:260px">'.esc_textarea($priv).'</textarea>';
+            echo '<textarea readonly style="width:100%;height:200px">'.esc_textarea($priv).'</textarea>';
             echo '<p>';
             submit_button('Зберегти приватний JWK у налаштування плагіну', 'secondary', 'submit', false);
             echo '<input type="hidden" name="alb_action" value="save_private"/>';
