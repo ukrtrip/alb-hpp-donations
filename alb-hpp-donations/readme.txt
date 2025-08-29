@@ -2,7 +2,7 @@
 Contributors: ukrtrip
 Tags: donations, payment, alliance bank, hpp, charity, Альянс Банк, AlliancePay
 Requires at least: 6.0
-Tested up to: 6.8.2
+Tested up to: 6.8
 Requires PHP: 8.0
 Stable tag: 1.2.2
 License: GPLv2 or later
