@@ -265,7 +265,8 @@ foreach ($fields as $key=>$label) {
             return;
         }
 		$opt = get_option(ALB_HPP_OPT, []);
-		
+        $env = $opt['environment'] ?? 'prod';
+
         $page = max(1, (int)($_GET['paged'] ?? 1));
         $per  = 10;
         $list = ALB_Payments::list($page, $per);
@@ -293,7 +294,19 @@ foreach ($fields as $key=>$label) {
                 echo '<td>'.esc_html($r['customer_email']).'</td>';
                 echo '<td>'.esc_html($r['customer_first_name']).'</td>';
                 echo '<td>'.esc_html($r['customer_last_name']).'</td>';
-                echo '<td>'.esc_html($r['purpose']).'</td>'; echo '<td><button class="button button-small alb-sync-one" data-id="'.(int)$r['id'].'">Оновити</button></td>';
+                echo '<td>'.esc_html($r['purpose']).'</td>';
+				echo '<td><button class="button button-small alb-sync-one" data-id="'.(int)$r['id'].'">Оновити</button>';
+				// Лише в тестовому середовищі показуємо інлайн-форму видалення ордера
+				if ($env === 'test') {
+					echo '<form method="post" action="'.esc_url( admin_url('admin-post.php') ).'" style="display:inline-block;margin-left:6px;" onsubmit="return confirm(\'Видалити цей ордер? Дію не можна скасувати!\');">';
+					echo '<input type="hidden" name="action" value="alb_hpp_delete_payment">';
+					echo '<input type="hidden" name="payment_id" value="'.(int)$r['id'].'">';
+					wp_nonce_field('alb_hpp_delete_payment_' . (int)$r['id']);
+					echo '<button type="submit" class="button-link-delete" title="Видалити">🗑</button>';
+					echo '</form>';
+				}
+				echo '</td>';
+
                 echo '</tr>';
             }
         } else {
@@ -311,7 +324,7 @@ foreach ($fields as $key=>$label) {
             echo '</p>';
         }
 		
-        if (current_user_can('manage_options') && $rows && $opt['environment'] === 'test') {
+        if (current_user_can('manage_options') && $rows && $env === 'test') {
 			echo'<form method="post" action="'.esc_url( admin_url('admin-post.php') ).'" 
                  onsubmit="return confirm(\'Дійсно видалити історію по всіх платежах? Цю дію не можна скасувати!\');" style="margin: 10px 0;">';
 		    echo '<input type="hidden" name="action" value="alb_hpp_delete_all_payments">';

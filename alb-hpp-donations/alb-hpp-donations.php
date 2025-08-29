@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ALB HPP Donations
  * Description: Шорткод [alb_donate] для благодійних внесків через Hosted Payment Page Альянс Банку.
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: SP for <a href="https://clusters.org.ua" target="_blank">UCA</a>
  * Requires at least: 5.8
  * Requires PHP: 8.0
@@ -521,6 +521,45 @@ add_action('admin_post_alb_hpp_delete_all_payments', function () {
     wp_safe_redirect($back);
     exit;
 });
+
+// Обробник POST: Видалення одного платежу (тільки у тестовому середовищі)
+add_action('admin_post_alb_hpp_delete_payment', function () {
+    if (!current_user_can('manage_options')) {
+        wp_die(__('Insufficient permissions', 'alb-hpp'));
+    }
+    $id = isset($_POST['payment_id']) ? (int) $_POST['payment_id'] : 0;
+    if ($id <= 0) {
+        wp_die(__('Bad request', 'alb-hpp'));
+    }
+    check_admin_referer('alb_hpp_delete_payment_' . $id);
+    // Дозволено тільки в тестовому середовищі
+    $opt = get_option('alb_hpp_options', []);
+    $env = isset($opt['environment']) ? $opt['environment'] : 'prod';
+    if ($env !== 'test') {
+        wp_die(__('Видалення дозволено лише у тестовому режимі.', 'alb-hpp'));
+    }
+    global $wpdb;
+    $table = $wpdb->prefix . 'alb_hpp_payments';
+    $deleted = $wpdb->delete($table, ['id' => $id], ['%d']);
+    if ($deleted) {
+        set_transient('alb_hpp_notice', [
+            'type' => 'success',
+            'text' => sprintf('Ордер #%d видалено.', $id),
+        ], 60);
+    } else {
+        set_transient('alb_hpp_notice', [
+            'type' => 'error',
+            'text' => sprintf('Не вдалося видалити ордер #%d.', $id),
+        ], 60);
+    }
+    $back = wp_get_referer();
+    if (!$back) {
+        $back = admin_url('admin.php?page=alb-hpp-payments');
+    }
+    wp_safe_redirect($back);
+    exit;
+});
+
 
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), function ($links) {
     $links[] = '<a href="' . esc_url(admin_url('admin.php?page=alb-hpp-manual')) . '">Документація</a>';
