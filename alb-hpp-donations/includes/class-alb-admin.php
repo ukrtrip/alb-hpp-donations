@@ -8,7 +8,7 @@ class ALB_Admin {
     }
 
     public static function menu() {
-        // 1) Топ-левел меню (іконку можна змінити)
+        // 1) Топ-левел меню
         add_menu_page(
             'ALB HPP Donations',          // page_title
             'ALB Donations',              // menu_title (те, що видно в меню)
@@ -19,7 +19,7 @@ class ALB_Admin {
             56                             // позиція (за бажанням)
         );
 
-        // 2) Сабменю: Налаштування (дублює головну, щоб було два пункти)
+        // 2) Налаштування (дублює головну, щоб було два пункти)
         add_submenu_page(
             'alb-hpp',                    // parent slug
             'Налаштування',               // page_title
@@ -29,7 +29,7 @@ class ALB_Admin {
             [__CLASS__, 'render_page']    // callback
         );
 
-        // 3) Сабменю: Історія платежів
+        // 3) Історія платежів
         add_submenu_page(
             'alb-hpp',
             'Історія платежів',
@@ -39,7 +39,7 @@ class ALB_Admin {
             [__CLASS__, 'render_payments']
         );
 		
-		// 4) Сабменю: Мануал
+		// 4) Мануал
 		add_submenu_page(
 			'alb-hpp',
 			'Документація', 
@@ -278,7 +278,7 @@ foreach ($fields as $key=>$label) {
         echo '<p><button class="button alb-sync-bulk">Оновити всі відкриті</button></p>'; echo '<table class="widefat striped">';
         echo '<thead><tr>
                 <th>ID</th><th>Дата</th><th>Сума, грн</th>
-                <th>Статус</th><th>HPP ID</th><th>MRID</th>
+                <th>Статус</th><th>HPP Order ID</th><th>Merchant ID</th>
                 <th>Email</th><th>Ім’я</th><th>Прізвище</th><th>Призначення</th><th>Дії</th>
               </tr></thead><tbody>';
         if ($rows) {

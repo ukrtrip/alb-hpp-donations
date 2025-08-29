@@ -17,14 +17,10 @@ class AlbHppClient {
         $this->refreshToken = $opt['refreshToken'] ?? null;
 
         if (!$this->merchantId) {
-//            throw new \RuntimeException('Не задано merchantId у налаштуваннях плагіна.');
-			throw new \RuntimeException(_e('MerchantId is not set in the plugin settings.','alb-hpp-donations'));
-			
+			throw new \RuntimeException(_e('MerchantId is not set in the plugin settings.','alb-hpp-donations'));			
         }
         if (!$this->deviceId || !$this->refreshToken) {
-//            throw new \RuntimeException('Не задано deviceId/refreshToken у налаштуваннях плагіна.');
-			throw new \RuntimeException(_e('DeviceId/refreshToken not set in plugin settings.','alb-hpp-donations'));
-			
+			throw new \RuntimeException(_e('DeviceId/refreshToken not set in plugin settings.','alb-hpp-donations'));			
         }
     }
 
@@ -96,7 +92,7 @@ class AlbHppClient {
         $data = json_decode($body, true);
 
         if ($code === 401 && $auth) {
-            throw new \RuntimeException('401 Unauthorized від API. Check deviceId/refreshToken.');
+            throw new \RuntimeException('401 Unauthorized from bank API. Check settings.');
         }
 
         if ($code >= 300) {

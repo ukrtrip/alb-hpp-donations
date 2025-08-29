@@ -12,7 +12,7 @@ function alb_donate_shortcode($atts = []) {
         <div class="alb-row">
           <label> <?php _e('Donation Amount','alb-hpp-donations');?> (<?php _e('UAH','alb-hpp-donations');?>) </label>
           <div class="alb-amounts">
-            <?php foreach ([500,1000,2500,5000] as $a): ?>
+            <?php foreach ([200,500,1000,2500,5000] as $a): ?>
               <button type="button" class="alb-btn-amount" data-amount="<?php echo esc_attr($a); ?>"><?php echo esc_html($a); ?></button>
             <?php endforeach; ?>
           </div>
@@ -44,4 +44,6 @@ function alb_donate_shortcode($atts = []) {
     <?php
     return ob_get_clean();
 }
+
+
 add_shortcode('alb_donate', 'alb_donate_shortcode');

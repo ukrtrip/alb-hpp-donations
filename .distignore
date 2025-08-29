@@ -1,0 +1,16 @@
+.git
+.github
+.gitattributes
+.gitignore
+*.md
+*.zip
+*.tar.gz
+node_modules
+.vscode
+.DS_Store
+tests
+composer.json
+composer.lock
+package.json
+package-lock.json
+webpack.config.js

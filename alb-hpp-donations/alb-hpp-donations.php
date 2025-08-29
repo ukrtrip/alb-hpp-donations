@@ -1,18 +1,22 @@
 <?php
 /**
  * Plugin Name: ALB HPP Donations
- * Description: Шорткод [alb_donate] для благодійних внесків через Hosted Payment Page Альянс Банку.
- * Version: 1.2.1
- * Author: SP for <a href="https://clusters.org.ua" target="_blank">UCA</a>
+ * Plugin URI: https://github.com/ukrtrip/alb-hpp-donations
+ * Description: Прийом благодійних внесків через Alliance Bank Hosted Payment Page (HPP API, Альянс Банк). Шорткод [alb_donate].
+ * Version: 1.2.2
+ * Author: UkrTrip
+ * Author URI: https://github.com/ukrtrip
+ * License: GPL-2.0-or-later
+ * Text Domain: alb-hpp-donations
+ * Domain Path: /languages
  * Requires at least: 5.8
  * Requires PHP: 8.0
- */
+*/
 if (!defined('ABSPATH')) exit;
 
 define('ALB_HPP_DIR', plugin_dir_path(__FILE__));
 
 // Environment base URLs
-//if (!defined('ALB_HPP_TEST_BASE')) define('ALB_HPP_TEST_BASE', 'https://api-ecom-release.develop.bankalliance.ua');
 if (!defined('ALB_HPP_TEST_BASE')) define('ALB_HPP_TEST_BASE', 'https://api-ecom-prod.bankalliance.ua');
 if (!defined('ALB_HPP_PROD_BASE')) define('ALB_HPP_PROD_BASE', 'https://api-ecom-prod.bankalliance.ua');
 if (!defined('ALB_HPP_TEST_JWE')) define('ALB_HPP_TEST_JWE', 'https://api-ecom-release.develop.bankalliance.ua');
