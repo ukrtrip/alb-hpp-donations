@@ -244,8 +244,8 @@ foreach ($fields as $key=>$label) {
 ?>
 <script>
  jQuery(function($){
-  const TEST_URL = '<?=ALB_HPP_TEST_BASE?>';
-  const PROD_URL = '<?=ALB_HPP_PROD_BASE?>';
+  const TEST_URL = '<?php echo ALB_HPP_TEST_BASE; ?>';
+  const PROD_URL = '<?php echo ALB_HPP_PROD_BASE; ?>';
   $('input[name="alb_hpp_options[environment]"]').on('change', function(){
     if ($(this).val() === 'test') {
       $('input[name="alb_hpp_options[baseUrl]"]').val(TEST_URL);

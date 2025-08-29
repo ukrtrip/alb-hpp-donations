@@ -123,25 +123,30 @@ class ALB_Keys_Admin {
 
         // .htaccess to deny all except public_jwk.json
         $ht = $dir . '/.htaccess';
-        $ht_body = <<<HT
-<IfModule mod_authz_core.c>
-    Require all denied
-</IfModule>
-<IfModule !mod_authz_core.c>
-    Deny from all
-</IfModule>
+        $ht_body = implode("\n", [
+            '<IfModule mod_authz_core.c>',
+            '    Require all denied',
+            '</IfModule>',
+            '<IfModule !mod_authz_core.c>',
+            '    Deny from all',
+            '</IfModule>',
+            '',
+            '# Дозволити лише публічний ключ',
+            '<Files "public_jwk.json">',
+            '    <IfModule mod_authz_core.c>',
+            '        Require all granted',
+            '    </IfModule>',
+            '    <IfModule !mod_authz_core.c>',
+            '        Allow from all',
+            '        Satisfy any',
+            '    </IfModule>',
+            '</Files>',
+            '',
+            '# Заборонити індексацію директорії',
+            'Options -Indexes',
+            ''
+        ]);
 
-# Дозволити лише публічний ключ
-<Files "public_jwk.json">
-    <IfModule mod_authz_core.c>
-        Require all granted
-    </IfModule>
-    <IfModule !mod_authz_core.c>
-        Allow from all
-        Satisfy any
-    </IfModule>
-</Files>
-HT;
         if (!file_exists($ht)) @file_put_contents($ht, $ht_body);
 
         // 1) Generate EC P-384 private key (PEM)

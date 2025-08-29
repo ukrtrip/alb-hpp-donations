@@ -1,9 +1,8 @@
 === ALB HPP Donations ===
 Contributors: ukrtrip
-Donate link: https://clusters.org.ua/
 Tags: donations, payment, alliance bank, hpp, charity, Альянс Банк, AlliancePay
 Requires at least: 6.0
-Tested up to: 6.6
+Tested up to: 6.8.2
 Requires PHP: 8.0
 Stable tag: 1.2.2
 License: GPLv2 or later

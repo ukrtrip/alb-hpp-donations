@@ -103,13 +103,6 @@ register_activation_hook(__FILE__, function () {
 });
 
 
-// Load plugin textdomain for translations
-function alb_hpp_donations_load_textdomain() {
-    load_plugin_textdomain('alb-hpp-donations', false, dirname(plugin_basename(__FILE__)) . '/languages');
-}
-add_action('plugins_loaded', 'alb_hpp_donations_load_textdomain');
-
-
 // Detect current site language ('uk' or 'en') using Polylang/WPML if present, else WP locale
 function alb_hpp_detect_language(): string {
     // 1) Запит може явно передати ?lang=uk|en
